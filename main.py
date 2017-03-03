@@ -2,11 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import webapp2
-from handlers.base import MainHandler
-from handlers.base import CookieAlertHandler
-from handlers.base import AboutHandler
-from handlers.topics import TopicAdd
-from handlers.topics import TopicDetails
+from handlers.base import MainHandler, CookieAlertHandler, AboutHandler
+from handlers.topics import TopicAdd, TopicDetails
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler, name="main-page"),
