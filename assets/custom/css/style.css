@@ -43,6 +43,22 @@
     display: block; /* Add this */
 }
 
+.downButton {
+    margin-top: 20px;
+}
+
+.comment {
+    margin-top: 20px;
+    display: block;
+}
+
+.downAddComment {
+    margin-top: 100px;
+    display: block;
+    width: 75%;
+    float: right;
+}
+
 @media only screen and (max-width: 768px) {
     .clock {
         font-size: 15px;

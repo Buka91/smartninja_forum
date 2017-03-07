@@ -5,7 +5,16 @@ import webapp2
 import jinja2
 import os
 from models.topic import Topic
-from google.appengine.api import users
+from google.appengine.api import users, memcache
+import uuid
+
+def is_local():
+    if os.environ.get('SERVER_NAME', '').startswith('localhost'):
+        return True
+    elif 'development' in os.environ.get('SERVER_SOFTWARE', '').lower():
+        return True
+    else:
+        return False
 
 template_dir = os.path.join(os.path.dirname(__file__), "../templates")
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False)
@@ -35,6 +44,10 @@ class BaseHandler(webapp2.RequestHandler):
         if user:
             params["user"] = user
             params["logout_url"] = users.create_logout_url('/')
+            # CSRF protection
+            csrf_token = str(uuid.uuid4())
+            memcache.add(key = csrf_token, value = user.email(), time = 600)
+            params["csrf_token"] = csrf_token
         else:
             params["login_url"] = users.create_login_url('/')
 
