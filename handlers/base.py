@@ -41,7 +41,9 @@ class BaseHandler(webapp2.RequestHandler):
 
         # google login
         user = users.get_current_user()
+        is_admin = users.is_current_user_admin()
         if user:
+            params["is_admin"] = is_admin
             params["user"] = user
             params["logout_url"] = users.create_logout_url('/')
             # CSRF protection

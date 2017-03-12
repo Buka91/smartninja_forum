@@ -26,8 +26,9 @@ class TopicAdd(BaseHandler):
         title = self.request.get("title")
         text = self.request.get("text")
 
-        new_topic = Topic(title=title, content=text, author_email=user.email())
-        new_topic.put()  # put() saves the object in Datastore
+        #new_topic = Topic(title=title, content=text, author_email=user.email())
+        #new_topic.put()  # put() saves the object in Datastore
+        new_topic = Topic.create(title, text, user)
 
         if is_local():
             time.sleep(0.1)
@@ -54,11 +55,22 @@ class TopicDetails(BaseHandler):
             return self.write("You are hecker!")
 
         current_topic = Topic.get_by_id(int(topic_id))
-        content = self.request.get("get_comment")
+        content = self.request.get("get_comment") #.encode("utf-8")
 
-        new_comment = Comment(content = content, author_email = user.email(), topic_id = int(topic_id), topic_title = current_topic.title)
-        new_comment.put()
+        Comment.create(content, user.email(), int(topic_id), current_topic)
 
         if is_local():
             time.sleep(0.1)
         return self.redirect_to("topic-details", topic_id = int(topic_id))
+
+
+class DeleteTopicHandler(BaseHandler):
+    def post(self, topic_id):
+        current_topic = Topic.get_by_id(int(topic_id))
+        current_topic.deleted = True
+        current_topic.put()
+
+        if is_local():
+            time.sleep(0.1)
+        return self.redirect_to("main-page") #, params = params)
+

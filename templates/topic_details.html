@@ -15,6 +15,19 @@
         <div class="panel-body">
             {{topic.content}}
         </div>
+        <div class="panel-footer">
+            <form method="post" action="/topic/details/{{topic.key.id()}}/delete" class="text-right" id="formDelete">
+                {% if logout_url %}
+                    {% if user.email() == topic.author_email or is_admin %}
+                        <button type="submit" id="deleteButton"><i class="material-icons">delete</i></button>
+                    {% else %}
+                        <button type="submit" disabled><i class="material-icons">delete</i></button>
+                    {% endif %}
+                {% else %}
+                    <button type="submit" disabled><i class="material-icons">delete</i></button>
+                {% endif %}
+            </form>
+        </div>
     </div>
 
     {% for comment in comments|sort(attribute = 'created') %}
@@ -33,16 +46,24 @@
         </div>
     {% endfor %}
 
-
-    <div class="panel panel-success downAddComment">
-        <div class="panel-heading">Add Comment</div>
-        <div class="panel-body">
-            <form method="post">
-                <input value="{{csrf_token}}" name="csrf_token" type="hidden">
-                <textarea name="get_comment" class="form-control" rows="6"></textarea>
-                <button type="submit" class="btn btn-success downButton pull-right">Submit</button>
-            </form>
+    {% if logout_url %}
+        <div class="panel panel-success downAddComment">
+            <div class="panel-heading">Add Comment</div>
+            <div class="panel-body">
+                <form method="post">
+                    <input value="{{csrf_token}}" name="csrf_token" type="hidden">
+                    <textarea name="get_comment" class="form-control" rows="6"></textarea>
+                    <button type="submit" class="btn btn-success downButton pull-right">Submit</button>
+                </form>
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="panel panel-success downAddComment">
+            <div class="panel-heading">Add Comment</div>
+            <div class="panel-body">
+                <p>You have to login to post a comment.</p>
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock content %}
