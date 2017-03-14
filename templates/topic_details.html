@@ -7,26 +7,25 @@
     <div class="panel panel-default down">
         <div class="panel-heading container-fluid">
             <div class="row">
-                <h3 class="panel-title col-xs-4 ptitle">{{topic.title}}</h3>
-                <p class="col-xs-4 col-xs-push-1 pname">{{topic.author_email}}</p>
-                <p class="col-xs-4 col-xs-push-2 pdate pull-right">{{topic.created.strftime("%d.%m.%Y %H:%M")}}</p>
+                <h3 class="panel-title col-xs-3 ptitle">{{topic.title}}</h3>
+                <p class="col-xs-3 col-xs-push-1 pname">{{topic.author_email}}</p>
+                <p class="col-xs-3 col-xs-push-2 pdate">{{topic.created.strftime("%d.%m.%Y %H:%M")}}</p>
+                <form method="post" action="/topic/details/{{topic.key.id()}}/delete" class="col-xs-3 text-right deleteForm">
+                    <input value="{{csrf_token}}" name="csrf_token" type="hidden">
+                    {% if logout_url %}
+                        {% if user.email() == topic.author_email or is_admin %}
+                            <button type="submit" class="deleteButton"><i class="material-icons">delete</i></button>
+                        {% else %}
+                            <button type="submit" disabled><i class="material-icons">delete</i></button>
+                        {% endif %}
+                    {% else %}
+                        <button type="submit" disabled><i class="material-icons">delete</i></button>
+                    {% endif %}
+                </form>
             </div>
         </div>
         <div class="panel-body">
             {{topic.content}}
-        </div>
-        <div class="panel-footer">
-            <form method="post" action="/topic/details/{{topic.key.id()}}/delete" class="text-right" id="formDelete">
-                {% if logout_url %}
-                    {% if user.email() == topic.author_email or is_admin %}
-                        <button type="submit" id="deleteButton"><i class="material-icons">delete</i></button>
-                    {% else %}
-                        <button type="submit" disabled><i class="material-icons">delete</i></button>
-                    {% endif %}
-                {% else %}
-                    <button type="submit" disabled><i class="material-icons">delete</i></button>
-                {% endif %}
-            </form>
         </div>
     </div>
 
@@ -35,9 +34,21 @@
         <div class="panel panel-default comment">
             <div class="panel-heading container-fluid">
                 <div class="row">
-                    <h3 class="panel-title col-xs-4 ptitle">{{comment.topic_title}}</h3>
-                    <p class="col-xs-4 col-xs-push-1 pname">{{comment.author_email}}</p>
-                    <p class="col-xs-4 col-xs-push-2 pdate">{{comment.created.strftime("%d.%m.%Y %H:%M")}}</p>
+                    <h3 class="panel-title col-xs-3 ptitle">{{comment.topic_title}}</h3>
+                    <p class="col-xs-3 col-xs-push-1 pname">{{comment.author_email}}</p>
+                    <p class="col-xs-3 col-xs-push-2 pdate">{{comment.created.strftime("%d.%m.%Y %H:%M")}}</p>
+                    <form method="post" action="/topic/details/{{comment.key.id()}}/deleteComment" class="col-xs-3 text-right deleteCommentForm">
+                        <input value="{{csrf_token}}" name="csrf_token" type="hidden">
+                        {% if logout_url %}
+                            {% if user.email() == comment.author_email or is_admin %}
+                                <button type="submit" class="deleteButton"><i class="material-icons">delete</i></button>
+                            {% else %}
+                                <button type="submit" disabled><i class="material-icons">delete</i></button>
+                            {% endif %}
+                        {% else %}
+                            <button type="submit" disabled><i class="material-icons">delete</i></button>
+                        {% endif %}
+                    </form>
                 </div>
             </div>
             <div class="panel-body">

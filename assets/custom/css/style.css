@@ -59,6 +59,12 @@
     float: right;
 }
 
+footer {
+    height: 200px;
+    width: 100%;
+    margin-top: 50px;
+}
+
 @media only screen and (max-width: 768px) {
     .clock {
         font-size: 15px;

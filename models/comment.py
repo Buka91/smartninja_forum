@@ -17,9 +17,6 @@ class Comment(ndb.Model):
     def create(cls, content, author, topic_id, topic):
         new_comment = cls(content = content, author_email = author, topic_id = topic_id, topic_title = topic.title)
         new_comment.put()
-        #mail.send_mail(sender = "david.bukovsek@gmail.com", to = author,
-        #               subject = "Dobil/a si nov komentar v topicu %s!" % topic.title,
-        #               body = u"Nov komentar: {0}. Povezava: http://useful-ward-147715.appspot.com/topic/details/{1}".format(content, topic_id))
         taskqueue.add(url = "/task/email-new-comment", params = {"topic_author_email": author, "topic_title": topic.title,
                                                                  "comment_content": content, "topic_id": topic_id})
 

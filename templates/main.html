@@ -9,4 +9,21 @@
     {% endfor %}
 </div>
 
+<footer>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3"> <!-- col-md-offset-3 premakne za 3 polja v desno -->
+            <p>Enter your email and receive an information about the hottest topics in last 24 hours!</p>
+            <form method="post", action="/subscribe/hottest-topics" class="subscribeForm">
+                <input value="{{csrf_token}}" name="csrf_token" type="hidden"> <!-- uvozimo zaščito proti hekerjem -->
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="email" required> <!-- required opcija, da mora uporabnik nujno izpolniti polje -->
+                </div>
+
+                <button type="submit" class="btn btn-success deleteButton">Submit</button>
+            </form>
+        </div>
+    </div>
+</footer>
 {% endblock content %}

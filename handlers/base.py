@@ -8,14 +8,6 @@ from models.topic import Topic
 from google.appengine.api import users, memcache
 import uuid
 
-def is_local():
-    if os.environ.get('SERVER_NAME', '').startswith('localhost'):
-        return True
-    elif 'development' in os.environ.get('SERVER_SOFTWARE', '').lower():
-        return True
-    else:
-        return False
-
 template_dir = os.path.join(os.path.dirname(__file__), "../templates")
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False)
 
