@@ -17,6 +17,11 @@ class EmailHottestTopicCron(BaseHandler):
         users = User.query(User.subscribed == True).fetch()
         if users:
             for usr in users:
-                mail.send_mail(sender = "david.bukovsek@gmail.com", to = usr.email,
-                               subject = u"Seznam najbolj vročih topicov",
-                               body = u"Naslednji topici so bili posodobljeni v zadnjih 24 urah: %s" %topics[:-2])
+                message = mail.EmailMessage(sender = "david.bukovsek@gmail.com",
+                                            subject = u"Seznam najbolj vročih topicov")
+                message.to = usr.email
+                message.body = u"Naslednji topici so bili posodobljeni v zadnjih 24 urah: %s" %topics[:-2]
+                message.send()
+                #mail.send_mail(sender = "david.bukovsek@gmail.com", to = usr.email,
+                #               subject = u"Seznam najbolj vročih topicov",
+                #               body = u"Naslednji topici so bili posodobljeni v zadnjih 24 urah: %s" %topics[:-2])

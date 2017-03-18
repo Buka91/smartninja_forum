@@ -11,6 +11,11 @@ class EmailNewCommentWorker(BaseHandler):
         topic_title = self.request.get("topic_title")
         comment_content = self.request.get("comment_content")
         topic_id = self.request.get("topic_id")
-        mail.send_mail(sender = "david.bukovsek@gmail.com", to = topic_author_email,
-                       subject = "Dobil/a si nov komentar v topicu %s!" % topic_title,
-                       body = u"Nov komentar: {0}. Povezava: http://useful-ward-147715.appspot.com/topic/details/{1}".format(comment_content, topic_id))
+        message = mail.EmailMessage(sender = "david.bukovsek@gmail.com",
+                                    subject = "Dobil/a si nov komentar v topicu %s!" % topic_title)
+        message.to = topic_author_email
+        message.body = u"Nov komentar: {0}. Povezava: http://useful-ward-147715.appspot.com/topic/details/{1}".format(comment_content, topic_id)
+        message.send()
+        #mail.send_mail(sender = "david.bukovsek@gmail.com", to = topic_author_email,
+        #               subject = "Dobil/a si nov komentar v topicu %s!" % topic_title,
+        #               body = u"Nov komentar: {0}. Povezava: http://useful-ward-147715.appspot.com/topic/details/{1}".format(comment_content, topic_id))
